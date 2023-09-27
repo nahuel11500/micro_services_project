@@ -43,12 +43,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/Users/AllUsers'
-  /show/{name}:
+  /show/{user_name}:
     get:
         tags:
         - developers
         summary: get a single user.
         operationID : get_user
+        parameters:
+          - name: name
+            in: path
+            description: name.
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
         responses:
           "200":
             description: get the informations of a single user
@@ -58,12 +67,12 @@ paths:
                   $ref: '#/components/Users/User'
           "400":
             description: bad input parameter
-  /show/reservation/user/{name}:
+  /show/reservation/user/{user_name}:
     get:
       tags:
       - developers
       summary: Show the reservation of a user by its name. The service Booking needs to be interrogated.
-      operationId: get_user_byname
+      operationId: get_user_reservation_by_name
       parameters:
       - name: name
         in: path
