@@ -95,7 +95,7 @@ paths:
     get:
       tags:
       - developers
-      summary: Show the information of a the movies reserved by a user. The services Booking and Movie need to be interrogated.
+      summary: Show the information of a movies reserved by a user. The services Booking and Movie need to be interrogated.
       operationId: get_user_byname
       parameters:
       - name: name

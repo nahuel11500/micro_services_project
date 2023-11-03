@@ -86,6 +86,14 @@ paths:
         explode: false
         schema:
           type: string
+      - name : movieId
+        in : query
+        description : pass the movie Id
+        required : true
+      - name : date
+        in : query
+        description : pass the movie date
+        required : true
       requestBody:
         description: item to add
         content:

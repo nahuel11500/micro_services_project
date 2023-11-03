@@ -37,6 +37,13 @@ def get_movie_byid(movieid):
             return res
     return make_response(jsonify({"error":"Movie ID not found"}),400)
 
+@app.route("/movies/<movieid>", methods=['POST'])
+def post_movie_byid(movieid):
+    for movie in movies:
+        if str(movie["id"]) == str(movieid):
+            res = make_response(jsonify(movie),200)
+            return res
+    return make_response(jsonify({"error":"Movie ID not found"}),400)
 @app.route("/moviesbytitle", methods=['GET'])
 def get_movie_bytitle():
     json = ""

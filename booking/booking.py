@@ -1,7 +1,6 @@
-from flask import Flask, render_template, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response
 import requests
 import json
-from werkzeug.exceptions import NotFound
 
 app = Flask(__name__)
 
@@ -28,7 +27,6 @@ def post_bookingByID(userid):
       req = request.args
       date = req['date']
       movieId = req['movieID']
-
       # Make a request to see if the date is available for the movie
       allMoviesJson = requests.get(f'http://172.16.134.102:3202/showmovies/{date}')
       allMoviesData = allMoviesJson.json()
@@ -48,10 +46,7 @@ def post_bookingByID(userid):
                      "movies": [movieId]
                   })
                   return jsonify({"status": "Booking successful"}), 200
-
-
             return jsonify({"status": "Booking successful"}, 200)
-
    return (jsonify({"status": "Booking failed"}, 409))
 
 @app.route("/bookings/<userid>", methods = ['GET'])
