@@ -8,5 +8,6 @@ Start-Sleep -Seconds 5
 docker exec -it user_container python test.py
 # Stop all running Docker containers
 docker stop $(docker ps -q)
+
 # Clean up Docker resources (remove stopped containers, networks, and dangling images)
 docker system prune
