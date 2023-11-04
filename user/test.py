@@ -2,14 +2,14 @@ import time
 
 import requests
 import json
-# Replace with the appropriate URL where your Flask app is running
+# URL where our Flask app is running
 app_url = "http://192.168.1.22:3203"
 
 # Sample data for testing
 user_name = "Chris%20Rivers"
 user_id = "chris_rivers"
 
-# Define the endpoints you want to test
+# Define the endpoints to test
 endpoints = [
     "/",
     "/showusers",
@@ -36,7 +36,7 @@ for endpoint in endpoints:
         print(response.content)
     time.sleep(4)
 
-# Example of sending a POST request to add a new user
+# Sending POST request to add a new user
 new_user_data = {"id": 3, "name": "Alice"}
 user_creation_url = f"{app_url}/users/3"
 response = requests.post(user_creation_url, json=new_user_data)

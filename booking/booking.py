@@ -14,16 +14,20 @@ with open('{}/databases/bookings.json'.format("."), "r") as jsf:
 def home():
    return "<h1 style='color:blue'>Welcome to the Booking service!</h1>"
 
+# This route handles a GET request to '/bookings'.
 @app.route("/bookings", methods=['GET'])
 def get_booking():
+   # Return a response containing the 'bookings' data in JSON format with a 200 OK status.
    res = make_response(jsonify(bookings),200)
    return res
 
 
-
+# This route handles a POST request to '/bookings/<userid>'.
 @app.route("/bookings/<userid>", methods = ['POST'])
 def post_bookingByID(userid):
+   # Check if there are query parameters in the request.
    if request.args:
+      #  if there are query parameters in the request, get them.
       req = request.args
       date = req['date']
       movieId = req['movieID']
@@ -49,8 +53,11 @@ def post_bookingByID(userid):
             return jsonify({"status": "Booking successful"}, 200)
    return (jsonify({"status": "Booking failed"}, 409))
 
+
+# This route handles a GET request to '/bookings/<userid>'.
 @app.route("/bookings/<userid>", methods = ['GET'])
 def get_bookingByID(userid):
+   # Search for booking data related to the specified 'userid'.
    for booking in bookings:
       if str(userid) == str(booking['userid']):
          res = make_response(jsonify(booking),200)
