@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, make_response
 import requests
 import json
+import os
 
 app = Flask(__name__)
 
@@ -10,6 +11,8 @@ HOST = '0.0.0.0'
 with open('{}/databases/bookings.json'.format("."), "r") as jsf:
    bookings = json.load(jsf)["bookings"]
 
+# Définissez l'URL du service Booking en utilisant une variable d'environnement
+times_service_url = os.getenv('TIMES_SERVICE_URL', 'http://127.0.0.1:3202')
 @app.route("/", methods=['GET'])
 def home():
    return "<h1 style='color:blue'>Welcome to the Booking service!</h1>"
@@ -32,7 +35,7 @@ def post_bookingByID(userid):
       date = req['date']
       movieId = req['movieID']
       # Make a request to see if the date is available for the movie
-      allMoviesJson = requests.get(f'http://172.16.134.102:3202/showmovies/{date}')
+      allMoviesJson = requests.get(f'{times_service_url}/showmovies/{date}')
       allMoviesData = allMoviesJson.json()
       # Check if the date and movieId are available
       for movie in allMoviesData.get('movies', []):

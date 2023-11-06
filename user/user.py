@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, make_response
-import requests
 import json
-
+import os
+import requests
 app = Flask(__name__)
 
 PORT = 3203
@@ -10,7 +10,16 @@ HOST = '0.0.0.0'
 with open('{}/databases/users.json'.format("."), "r") as jsf:
     users = json.load(jsf)["users"]
 
+#Définie l'URL du service Booking en utilisant une variable d'environnement (la seconde valeur est la valeur par défaut)
+booking_service_url = os.getenv('BOOKING_SERVICE_URL', 'http://127.0.0.1:3201')
 
+
+#Définie l'URL du service Moovie en utilisant une variable d'environnement
+movie_service_url = os.getenv('MOVIE_SERVICE_URL', 'http://127.0.0.1:3200')
+
+#URL de secours si la variable d'environnement n'est pas définie
+if not booking_service_url:
+    movie_service_url = 'http://127.0.0.1:3201'
 @app.route("/", methods=['GET'])
 def home():
     return "<h1 style='color:blue'>Welcome to the User service!</h1>"
@@ -47,7 +56,7 @@ def get_user_reservation_by_name(user_name):
         if str(_user['name']) == str(user_name):
             user_id = _user["id"]
             # Make a request to see if the date is available for the movie
-            response = requests.get(f'http://192.168.1.22:3201/bookings/{user_id}')
+            response = requests.get(f'{booking_service_url}/bookings/{user_id}')
             if response.status_code == 200:
                 # If reservations are found, merge user and reservation data.
                 merged_dict = {**_user, **response.json()}
@@ -81,7 +90,7 @@ def get_user_byid(userid):
 @app.route("/bookings/<userid>", methods=['GET'])
 def get_booking_for_user(userid):
     # Make a request to the micro-service booking to get booking data for the user.
-    response = requests.get(f"http://192.168.1.22:3201/bookings/{userid}")
+    response = requests.get(f"{booking_service_url}/bookings/{userid}")
     # Return the response from the external service.
     return make_response(response.json(), response.status_code)
 
@@ -89,7 +98,7 @@ def get_booking_for_user(userid):
 @app.route("/movies", methods=['GET'])
 def get_movies():
     # Make a request to the micro-service movie to get movie data.
-    response = requests.get(f"http://192.168.1.22:3200/json")
+    response = requests.get(f"{movie_service_url}/json")
     return make_response(jsonify(response.json()), response.status_code)
 
 
@@ -116,7 +125,7 @@ def add_booking_byuser(userid):
     # Extract the JSON data from the request.
     req = request.get_json()
     # Make a request to the micro-service booking to add a booking for the user.
-    response = requests.post(f"http://192.168.1.22:3201/bookings/{userid}", json=req)
+    response = requests.post(f"{booking_service_url}/bookings/{userid}", json=req)
     # Return the response from the the micro-service booking
     return make_response(response.json(), response.status_code)
 

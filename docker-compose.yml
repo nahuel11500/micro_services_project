@@ -16,9 +16,14 @@ services:
     build: ./user/
     ports:
         - "3203:3203"
+    environment:
+      - BOOKING_SERVICE_URL=http://booking_container:3201
+      - MOVIE_SERVICE_URL=http://movie_container:3200
   booking:
     container_name: booking_container
     build: ./booking/
     ports:
         - "3201:3201"
+    environment:
+      - TIMES_SERVICE_URL=http://showtime_container:3202
 

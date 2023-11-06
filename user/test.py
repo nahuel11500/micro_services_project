@@ -1,10 +1,11 @@
 import time
-
+import socket
 import requests
 import json
 # URL where our Flask app is running
-app_url = "http://192.168.1.22:3203"
 
+ip_address = socket.gethostbyname(socket.gethostname())
+app_url = "http://127.0.0.1:3203"
 # Sample data for testing
 user_name = "Chris%20Rivers"
 user_id = "chris_rivers"
